@@ -64,11 +64,7 @@ namespace gr {
     avg_m_over_n_cc_impl::forecast (int noutput_items,
                           gr_vector_int &ninput_items_required) 	
     {
-        if (noutput_items < d_win_size) {
-            ninput_items_required[0] = d_m*d_win_size;
-        } else {
-            ninput_items_required[0] = d_m*noutput_items;
-        }
+        ninput_items_required[0] = d_win_size;
     }
 
     int
@@ -80,18 +76,14 @@ namespace gr {
         const gr_complex *in = (const gr_complex*) input_items[0];
         gr_complex *out = (gr_complex*) output_items[0];
 
-        // if we do not have enough input samples wait for more
-        if (ninput_items[0] < d_win_size) {
+        // if we do not have enough output samples wait for more space to free up
+        if (noutput_items < d_win_size) {
             return 0;
         }
 
         // add to average
         d_counter++;
-        if( is_unaligned() ) {
-            volk_32f_x2_add_32f_u((float*) d_avg, (float*) d_avg, (float*) in, 2*d_win_size);
-        } else {
-            volk_32f_x2_add_32f_a((float*) d_avg, (float*) d_avg, (float*) in, 2*d_win_size);
-        }
+        volk_32f_x2_add_32f((float*) d_avg, (float*) d_avg, (float*) in, 2*d_win_size);
         consume_each(d_win_size);
 
         if (d_counter == d_m) {

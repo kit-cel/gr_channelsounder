@@ -1,0 +1,16 @@
+build/
+CMakeCache.txt
+apps/CMakeFiles
+apps/CtestTestfile.cmake
+apps/Makefile
+apps/cmake_install.cmake
+apps/cmake_uninstall.cmake
+apps/docs/
+apps/grc/
+apps/include/
+apps/install_manifest.txt
+apps/lib/
+apps/python/
+apps/swig/
+apps/apps
+apps/CTestTestfile.cmake
